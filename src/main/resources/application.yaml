@@ -19,6 +19,13 @@ spring:
                 - certificate-location: "classpath:saml/okta.cert"
               singlesignon.url: https://dev-72526167.okta.com/app/dev-72526167_eaglwebappdemo_1/exk30sqznncnBKwRT5d7/sso/saml
               singlesignon.sign-request: false
+          daad:
+            identityprovider:
+              entity-id: http://www.okta.com/exk30sqznncnBKwRT5d7
+              verification.credentials:
+                - certificate-location: "classpath:saml/okta.cert"
+              singlesignon.url: https://dev-72526167.okta.com/app/dev-72526167_eaglwebappdemo_1/exk30sqznncnBKwRT5d7/sso/saml
+              singlesignon.sign-request: false
 
 metadata:
   location: "saml/metadata.xml"

@@ -43,13 +43,15 @@ public class SecurityConfiguration {
         http
                 .csrf().disable() // required for okta
                 .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().authenticated()
+                        .mvcMatchers("/user/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .saml2Login(withDefaults())
                 .saml2Logout(withDefaults());
         // @formatter:on
 
         // add auto-generation of ServiceProvider Metadata
+        // access through http://localhost:8090/saml2/service-provider-metadata/{reg-id}}
         Converter<HttpServletRequest, RelyingPartyRegistration> relyingPartyRegistrationResolver = new DefaultRelyingPartyRegistrationResolver(relyingPartyRegistrationRepository);
         Saml2MetadataFilter filter = new Saml2MetadataFilter(relyingPartyRegistrationResolver, new OpenSamlMetadataResolver());
         http.addFilterBefore(filter, Saml2WebSsoAuthenticationFilter.class);
@@ -59,11 +61,16 @@ public class SecurityConfiguration {
 
     @Bean
     public RelyingPartyRegistrationRepository relyingPartyRegistrations() {
-        RelyingPartyRegistration registration = RelyingPartyRegistrations
+        RelyingPartyRegistration okta = RelyingPartyRegistrations
                 .fromMetadataLocation(assertingPartyMetadataLocation)
                 .registrationId("okta")
                 .build();
-        return new InMemoryRelyingPartyRegistrationRepository(registration);
+
+        RelyingPartyRegistration daad = RelyingPartyRegistrations
+                .fromMetadataLocation("https://saml-bird.daad.com/saml2/idp/metadata.php")
+                .registrationId("daad")
+                .build();
+        return new InMemoryRelyingPartyRegistrationRepository(okta, daad);
     }
 
 
