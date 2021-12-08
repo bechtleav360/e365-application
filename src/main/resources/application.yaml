@@ -1,0 +1,30 @@
+#spring:
+#  datasource:
+#    url: jdbc:h2:file:/data/demo
+
+
+server:
+  port : 8090
+
+
+spring:
+  security:
+    saml2:
+      relyingparty:
+        registration:
+          okta:
+            identityprovider:
+              entity-id: http://www.okta.com/exk30sqznncnBKwRT5d7
+              verification.credentials:
+                - certificate-location: "classpath:saml/okta.cert"
+              singlesignon.url: https://dev-72526167.okta.com/app/dev-72526167_eaglwebappdemo_1/exk30sqznncnBKwRT5d7/sso/saml
+              singlesignon.sign-request: false
+
+metadata:
+  location: "saml/metadata.xml"
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.saml2: TRACE
