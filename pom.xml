@@ -10,7 +10,7 @@
         <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bechtle.eagl</groupId>
-    <artifactId>webapp</artifactId>
+    <artifactId>eagl-application</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>webapp</name>
     <description>Simple Webapp for EAGL PoC</description>
