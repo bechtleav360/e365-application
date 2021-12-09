@@ -35,8 +35,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class SecurityConfiguration {
 
-    @Value("${metadata.location}")
-    String assertingPartyMetadataLocation;
+    @Value("${metadata.locations.okta_azure}")
+    String okta_metadata;
+    @Value("${metadata.locations.okta_localhost}")
+    String okta_metadata_localhost;
 
     @Bean
     SecurityFilterChain configureSaml(HttpSecurity http, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) throws Exception {
@@ -62,15 +64,20 @@ public class SecurityConfiguration {
     @Bean
     public RelyingPartyRegistrationRepository relyingPartyRegistrations() {
         RelyingPartyRegistration okta = RelyingPartyRegistrations
-                .fromMetadataLocation(assertingPartyMetadataLocation)
+                .fromMetadataLocation(okta_metadata)
                 .registrationId("okta")
+                .build();
+
+        RelyingPartyRegistration okta_local = RelyingPartyRegistrations
+                .fromMetadataLocation(okta_metadata_localhost)
+                .registrationId("okta_localhost")
                 .build();
 
         RelyingPartyRegistration daad = RelyingPartyRegistrations
                 .fromMetadataLocation("https://saml-bird.daad.com/saml2/idp/metadata.php")
                 .registrationId("daad")
                 .build();
-        return new InMemoryRelyingPartyRegistrationRepository(okta, daad);
+        return new InMemoryRelyingPartyRegistrationRepository(okta, okta_local, daad);
     }
 
 
