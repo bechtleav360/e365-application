@@ -54,6 +54,11 @@
             <artifactId>jackson-dataformat-xml</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
+            <version>6.2.7</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
         </dependency>
@@ -102,6 +107,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <noPackageLevelAnnotations>true</noPackageLevelAnnotations>
                     <packageName>com.bechtle.eagl.webapp.model.metadata</packageName>
                 </configuration>
             </plugin>
@@ -120,7 +126,9 @@
                     </image>
                     <docker>
                         <publishRegistry>
+                            <!--suppress UnresolvedMavenProperty -->
                             <username>${env.GHCR_USER}</username>
+                            <!--suppress UnresolvedMavenProperty -->
                             <password>${env.GHCR_PASSWORD}</password>
                             <url>https://ghcr.io</url>
                         </publishRegistry>

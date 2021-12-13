@@ -52,6 +52,19 @@ locations:
 
 
 logging:
+  path: "./"
   level:
     org.springframework.security: DEBUG
     org.springframework.security.saml2: TRACE
+
+management:
+  endpoint:
+    mappings:
+      enabled: true
+    info:
+      git:
+        enabled: true
+      enabled: true
+    logs:
+      enabled: true
+

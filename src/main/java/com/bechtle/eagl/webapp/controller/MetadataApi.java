@@ -1,9 +1,6 @@
 package com.bechtle.eagl.webapp.controller;
 
-import com.bechtle.eagl.webapp.model.metadata.MBirdAcademy;
-import com.bechtle.eagl.webapp.model.metadata.MImport;
-import com.bechtle.eagl.webapp.model.metadata.MList;
-import com.bechtle.eagl.webapp.model.metadata.MType;
+import com.bechtle.eagl.webapp.model.metadata.*;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +12,7 @@ public class MetadataApi {
     public MImport loadMetadata() {
         MImport mImport = new MImport();
         mImport.getList().add(getAcademy());
+        mImport.getList().add(getCourse());
 
         return mImport;
     }
@@ -28,6 +26,19 @@ public class MetadataApi {
         MList mList = new MList();
         mList.setType(MType.BIRD_ACADEMY);
         mList.getBirdAcademy().add(academy);
+        return mList;
+    }
+
+    private MList getCourse() {
+        MBirdCourse course = new MBirdCourse();
+        course.setId("IT-Controlling");
+        course.setLectureType("Playlist");
+        course.setAcademyId("WWW");
+        course.setLectureType("Kurs");
+
+        MList mList = new MList();
+        mList.setType(MType.BIRD_COURSE);
+        mList.getBirdCourse().add(course);
         return mList;
     }
 
