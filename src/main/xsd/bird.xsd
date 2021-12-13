@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="https://www.mathplan.de/moses/xsd/default"
+           targetNamespace="https://www.mathplan.de/moses/xsd/default"
+           elementFormDefault="qualified">
+
+    <!-- ======================================================================= -->
+    <!--                             Grundstruktur                               -->
+    <!-- ======================================================================= -->
+
+    <xs:element name="import" type="MImport" ></xs:element>
+
+    <xs:complexType name="MImport">
+        <xs:sequence>
+            <xs:element name="list" type="MList" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MList">
+        <xs:choice>
+            <!-- ******************** BIRD-Spezifika ******************** -->
+            <xs:element name="bird_academy" type="MBirdAcademy" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="bird_program" type="MBirdProgram" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="bird_module" type="MBirdModule" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="bird_course" type="MBirdCourse" minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
+        <xs:attribute name="type" type="MType" use="required"/>
+        <xs:attribute name="context" type="MContext"/>
+        <xs:attribute name="mode" type="MMode" />
+        <xs:attribute name="semesterFilter" type="xs:string" />
+        <xs:attribute name="order" type="ordertype" default="1000"/>
+    </xs:complexType>
+
+    <xs:simpleType name="ordertype">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="MContext" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="MMode" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="add" />
+            <xs:enumeration value="sync" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="MId">
+        <xs:restriction base="xs:string">
+            <!-- Keine Pipe-Zeichen und keine führenden/nachgestellten Whitespaces -->
+            <xs:pattern value="[^\s|]|[^\s|][^|]*[^\s|]" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="MType" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="bird_academy" />
+            <xs:enumeration value="bird_program" />
+            <xs:enumeration value="bird_module" />
+            <xs:enumeration value="bird_course" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ======================================================================= -->
+    <!--                               Basistypen                                -->
+    <!-- ======================================================================= -->
+
+    <xs:complexType name="MBaseEntity">
+        <xs:sequence>
+            <xs:element name="ignore" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="ignoreIfSet" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="id" type="MId" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MNamedEntity">
+        <xs:complexContent>
+            <xs:extension base="MBaseEntity">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MBirdAcademy">
+        <xs:complexContent>
+            <xs:extension base="MNamedEntity">
+                <xs:sequence>
+                    <xs:element name="kurzname" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MBirdProgram">
+        <xs:complexContent>
+            <xs:extension base="MNamedEntity">
+                <xs:sequence>
+                    <xs:element name="academyId" type="MId" />
+                    <xs:element name="degreeName"  type="xs:string" />
+                    <xs:element name="startOfProgram"  minOccurs="0" type="xs:string" />
+                    <xs:element name="typeOfStudies"  minOccurs="0" type="xs:string" />
+                    <xs:element name="periodOfStudy"  minOccurs="0" type="xs:integer" />
+                    <xs:element name="focusOfStudy"  minOccurs="0" type="xs:string" />
+                    <xs:element name="languageOfStudy"  minOccurs="0" type="xs:string" />
+                    <xs:element name="locationOfStudy"  minOccurs="0" type="xs:string" />
+                    <xs:element name="restrictedApplication"  minOccurs="0" type="xs:boolean" />
+                    <xs:element name="applicationRequirements"  minOccurs="0" type="xs:string" />
+                    <xs:element name="birdModuleId" type="MId" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="birdCourseId" type="MId" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MBirdModule">
+        <xs:complexContent>
+            <xs:extension base="MNamedEntity">
+                <xs:sequence>
+                    <xs:element name="academyId" type="MId" />
+                    <xs:element name="examtitle"  minOccurs="0"  type="xs:string" />
+                    <xs:element name="subjectExamtitle"  minOccurs="0" type="xs:string" />
+                    <xs:element name="duration"  minOccurs="0" type="xs:integer" />
+                    <xs:element name="credits"  minOccurs="0" type="xs:integer" />
+                    <xs:element name="workload"  minOccurs="0" type="xs:string" />
+                    <xs:element name="requirements"  minOccurs="0" type="xs:string" />
+                    <xs:element name="learningOutcomes"  minOccurs="0" type="xs:string" />
+                    <xs:element name="recommendedKnowledge"  minOccurs="0" type="xs:string" />
+                    <xs:element name="moduleContent"  minOccurs="0" type="xs:string" />
+                    <xs:element name="formOfWork"  minOccurs="0" type="xs:string" />
+                    <xs:element name="birdCourseId" type="MId" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MBirdCourse">
+        <xs:complexContent>
+            <xs:extension base="MNamedEntity">
+                <xs:sequence>
+                    <xs:element name="academyId" type="MId" />
+                    <xs:element name="lectureType" type="xs:string" />
+                    <xs:element name="sws"  minOccurs="0" type="xs:integer" />
+                    <xs:element name="department"  minOccurs="0" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+</xs:schema>

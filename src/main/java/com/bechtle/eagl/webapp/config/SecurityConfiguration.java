@@ -72,7 +72,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authorize) -> authorize
                         .mvcMatchers("/user/**").authenticated()
                         .mvcMatchers("/saml2/**").permitAll()
-
+                        .mvcMatchers("/metadata/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .saml2Login(withDefaults())
