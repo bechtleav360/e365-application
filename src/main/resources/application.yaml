@@ -28,16 +28,27 @@ spring:
               singlesignon.sign-request: false
           daad:
             identityprovider:
-              entity-id: http://www.okta.com/exk30sqznncnBKwRT5d7
+              entity-id: https://saml-bird.daad.com/saml2/idp/metadata.php
               verification.credentials:
-                - certificate-location: "classpath:saml/okta.cert"
-              singlesignon.url: https://dev-72526167.okta.com/app/dev-72526167_eaglwebappdemo_1/exk30sqznncnBKwRT5d7/sso/saml
+                - certificate-location: "classpath:saml/daad-signing.cert"
+              singlesignon.url: https://saml-bird.daad.com/saml2/idp/SSOService.php
               singlesignon.sign-request: false
 
-metadata:
-  locations:
+
+locations:
+  metadata:
     okta_azure: "saml/metadata.xml"
     okta_localhost: "saml/metadata-localhost.xml"
+    daad: "https://saml-bird.daad.com/saml2/idp/metadata.php"
+  certificates:
+    signing: "saml/localhost.cer"
+    decryption: "saml/localhost.cer"
+    verification:
+      okta_azure: "saml/okta.cert"
+      okta_localhost: "saml/okta.cert"
+      daad: "saml/daad.cert"
+  key: "saml/localhost/localhost.key.pem"
+
 
 
 logging:

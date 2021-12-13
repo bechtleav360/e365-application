@@ -9,33 +9,35 @@
     <meta name="author" content="">
     <!-- <link rel="icon" href="../../favicon.ico"/> -->
 
-    <title>Navbar Template for Bootstrap</title>
+    <title>Startseite</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.css}" crossorigin="anonymous" />
-    <link rel="stylesheet" th:href="@{/custom.css}" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.css}" crossorigin="anonymous"/>
+    <link rel="stylesheet" th:href="@{/custom.css}"/>
 
 </head>
 <body class="d-flex flex-column h-100">
 
-    <div th:replace="navbar :: navbar">  </div>
+<div th:replace="navbar :: navbar"></div>
 
-    <!-- Begin page content -->
-    <main class="flex-shrink-0">
-        <div class="container">
-            <h1 class="mt-5">Lernpfade mit kostenfreien Inhalten aus dem Web</h1>
-            <p class="lead">
-                Herzlich Willkommen bei EAGL, ein Proof of Concept für das Generieren von Vorschlägen für Lernpfade mit kostenfreien Lernhinhalten aus dem Web.
+<!-- Begin page content -->
+<main class="flex-shrink-0">
+    <div class="container">
+        <h1 class="mt-5">Lernpfade mit kostenfreien Inhalten aus dem Web</h1>
+        <p class="lead">
+            Herzlich Willkommen bei EAGL, ein Proof of Concept für das Generieren von Vorschlägen für Lernpfade mit
+            kostenfreien Lernhinhalten aus dem Web.
 
-                Falls Sie diese Anwendung das erste Mal besuchen, melden Sie sich bitte an und verknüpfen ihre persönliche Wallet.
+            Falls Sie diese Anwendung das erste Mal besuchen, melden Sie sich bitte an und verknüpfen ihre persönliche
+            Wallet.
 
-            </p>
-        </div>
-    </main>
+        </p>
+    </div>
+</main>
 
-    <div th:replace="footer :: footer">  </div>
+<div th:replace="footer :: footer"></div>
 
 
-    <script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}" crossorigin="anonymous"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}" crossorigin="anonymous"></script>
 </body>
 </html>
