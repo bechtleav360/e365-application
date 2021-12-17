@@ -1,1 +1,0 @@
-The file "bird.xsd" is expected to be here. 

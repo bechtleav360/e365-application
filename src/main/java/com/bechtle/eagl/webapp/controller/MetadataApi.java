@@ -1,6 +1,7 @@
 package com.bechtle.eagl.webapp.controller;
 
 import com.bechtle.eagl.webapp.model.metadata.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,9 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MetadataApi {
 
+    private ObjectFactory objectFactory;
+
+    public MetadataApi(@Autowired ObjectFactory objectFactory) {
+
+        this.objectFactory = objectFactory;
+    }
+
+
     @RequestMapping(value="/metadata", produces= MediaType.APPLICATION_XML_VALUE)
-    public MImport loadMetadata() {
-        MImport mImport = new MImport();
+    public Import loadMetadata() {
+
+        Import mImport = objectFactory.createImport();
         mImport.getList().add(getAcademy());
         mImport.getList().add(getCourse());
 
@@ -18,7 +28,7 @@ public class MetadataApi {
     }
 
     private MList getAcademy() {
-        MBirdAcademy academy = new MBirdAcademy();
+        MBirdAcademy academy = objectFactory.createMBirdAcademy();
         academy.setId("EAGL");
         academy.setKurzname("Generierte Lernpfade");
         academy.setName("Generierte Lernpfade für kostenfreie Inhalte");

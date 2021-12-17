@@ -1,8 +1,8 @@
 package com.bechtle.eagl.webapp.config;
 
+import com.bechtle.eagl.webapp.model.metadata.ObjectFactory;
 import com.ctc.wstx.api.WstxOutputProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
@@ -34,4 +34,12 @@ public class JacksonConfiguration {
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
+
+
+    @Bean
+    public ObjectFactory objectFactory() {
+        return new ObjectFactory();
+    }
 }
+
+
