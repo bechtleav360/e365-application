@@ -100,10 +100,8 @@
                 <version>2.5.0</version>
                 <executions>
                     <execution>
-                        <id>xsd-to-java</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
+                        <!-- disable automatic execution, since xsds are not in repo -->
+                        <phase>none</phase>
                     </execution>
                 </executions>
                 <configuration>
