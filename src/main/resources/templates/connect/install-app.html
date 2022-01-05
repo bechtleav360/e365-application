@@ -1,0 +1,84 @@
+<!doctype html>
+<html class="h-100" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"/> -->
+
+    <title>Navbar Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.css}" crossorigin="anonymous"/>
+    <link rel="stylesheet" th:href="@{/custom.css}"/>
+
+</head>
+<body class="d-flex flex-column h-100">
+
+
+<div th:replace="navbar :: navbar"></div>
+
+
+<!-- Begin page content -->
+<main class="flex-shrink-0">
+
+
+    <div class="container col-xxl-8 px-4 py-5">
+        <div class="progress" style="height: 20px">
+            <div class="progress-bar" role="progressbar" style="width: 33%;" aria-valuenow="25"
+                 aria-valuemin="0" aria-valuemax="100"><span th:text="${progress}"></span></div>
+        </div>
+
+
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5">
+                <div class="row">
+                    <h1 class="display-5 fw-bold">Enmeshed App installieren</h1>
+
+                    <p class="col-md-8 fs-4">
+                        Installieren Sie die Enmeshed App auf ihr Smartphone. Bitte folgen Sie den Anweisungen für die
+                        Ersteinrichtung in der App. Nach der erfolgreichen Installation starten wir mit der Verknüpfung.
+                    </p>
+
+                </div>
+                <div class="row gy-9">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href='https://play.google.com/store/apps/details?id=eu.enmeshed.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                            <img style="width: 250px;" alt='Jetzt bei Google Play'
+                                 src='https://play.google.com/intl/en_us/badges/static/images/badges/de_badge_web_generic.png'/>
+                        </a>
+
+                        <a href="https://apps.apple.com/us/app/enmeshed/id1576693742?itsct=apps_box_badge&amp;itscg=30200"
+                           class="img-fluid"
+                           style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img
+                                src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/de-de?size=250x83&amp;releaseDate=1628812800&h=3bed5b03a80dfa1a71b8c60cafc78eb8"
+                                alt="Download on the App Store"
+                                style="border-radius: 13px; width: 250px; height: 83px;">
+                        </a>
+                    </div>
+                </div>
+                <div class="row gy-5 ">
+                    <div class="d-grid gap-2 d-md-block">
+                        <a class="btn btn-lg btn-primary" aria-current="page" href="/user/connect/scan">QR-Code scannen</a>
+                        <a class="btn btn-lg btn-secondary" aria-current="page" href="/user/profile">Abbrechen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<div th:replace="footer :: footer"></div>
+
+
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}" crossorigin="anonymous"></script>
+</body>
+</html>

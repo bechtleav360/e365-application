@@ -25,16 +25,10 @@
 
                     <div class="navbar-nav">
                         <div class="nav-item text-nowrap" sec:authorize="isAuthenticated()">
-                            <a class="btn btn-sm btn-outline-secondary" aria-current="page" href="/user/info"><span
-                                    sec:authentication="name"></span></a>
-                        </div>
-                        <div class="nav-item text-nowrap" sec:authorize="isAuthenticated()">
-
-
+                            <a class="btn btn-sm btn-outline-secondary" aria-current="page" href="/user/info">
+                                Profil </a>
                             <a class="btn btn-sm btn-outline-secondary" href="/logout">Abmelden</a>
                         </div>
-
-
 
                         <div class="nav-item text-nowrap" sec:authorize="isAnonymous()">
                             <a class="btn btn-sm btn-outline-secondary" aria-current="page" href="/login">Anmelden</a>
@@ -43,17 +37,9 @@
 
 
                 </div>
-
-
-                <!--
-                                        <form class="d-flex">
-                                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                        <button class="btn btn-outline-success" type="submit">Search</button>
-                                    </form> -->
             </div>
-</div>
-</nav>
-</header>
+        </nav>
+    </header>
 </div>
 </body>
 

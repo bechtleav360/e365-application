@@ -1,4 +1,4 @@
-package com.bechtle.eagl.webapp.controller;
+package com.bechtle.eagl.webapp.pages;
 
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;

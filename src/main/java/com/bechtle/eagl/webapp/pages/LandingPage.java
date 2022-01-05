@@ -1,4 +1,4 @@
-package com.bechtle.eagl.webapp.controller;
+package com.bechtle.eagl.webapp.pages;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

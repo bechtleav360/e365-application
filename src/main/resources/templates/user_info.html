@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html class="h-100" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -24,7 +24,22 @@
 
 <!-- Begin page content -->
 <main class="flex-shrink-0">
+
+
+
     <div class="container">
+        <div class="alert alert-info">
+            <h4>Verknüpfung mit Wallet fehlt</h4>
+            <p>
+                Für die Speicherung ihres Lernfortschritts benötigen wir eine Verknüpfung mit ihrer persönlichen Wallet
+            in der Enmeshed App.
+            </p>
+
+            <a class="btn btn-lg btn-primary" aria-current="page" href="/user/connect/install">Verknüpfung mit Wallet hier starten</a>
+        </div>
+
+
+
         <div>Sie sind derzeit angemeldet mit dem Nutzernamen:   <span sec:authentication="name"></span></div>
 
         <div>Mit ihrem Account ist noch keine Wallet verknüpft. </div>
