@@ -29,7 +29,7 @@
 
     <div class="container col-xxl-8 px-4 py-5">
         <div class="progress" style="height: 20px">
-            <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50"
+            <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75"
                  aria-valuemin="0" aria-valuemax="100"><span th:text="${progress}"></span></div>
         </div>
 
@@ -37,27 +37,36 @@
         <div class="p-5 mb-4 bg-light rounded-3">
             <div class="container-fluid py-5">
                 <div class="row">
-                    <h1 class="display-5 fw-bold">Verknüpfung anfragen</h1>
+                    <h1 class="display-5 fw-bold">Verknüpfung einrichten</h1>
 
                     <p class="col-md-8 fs-4">
-                        Öffnen sie die Enmeshed App und richten Sie, falls notwendig, ein neues Profil ein. Sobald Sie gefragt werden,
-                        scannen sie mit Hilfe ihrer Kamera bitte den angezeigten QR-Code ein.
-
+                       Sie haben nun eine Verbindungsanfrage erstellt, die im nächsten Schritt von uns geprüft wird. Das kann ein paar Sekunden dauern.
+                        Sie bekommen über die App eine Nachricht von uns mit einem vierstelligen Code, den Sie bitte in das folgende Formular eintragen. Nur dann
+                        können wir die Verbindungsanfrage auch ihrem Account zuordnen
                     </p>
 
                 </div>
-                <div class="row gy-9">
-                    <div class="container">
-                    <img class="img-thumbnail" alt="QR-Code für Scan" th:src="@{/api/token(login=${login})}">
+                <form action="#" th:action="@{/user/connect/code}" method="post">
+                    <div class="row gy-5">
+
+                            <div class="form-group">
+                                <label for="linkingCode">Einrichtungscode</label>
+                                <input type="number" class="form-control" id="linkingCode" aria-describedby="codeHelp" placeholder="Code" th:name="linkingCode">
+                                <small id="codeHelp" class="form-text text-muted">Geben sie hier bitte den Code ein, den sie über die App erhalten haben.</small>
+                            </div>
+
+
                     </div>
-                </div>
-                <div class="row gy-5 ">
-                    <div class="d-grid gap-2 d-md-block">
-                        <a class="btn btn-primary" aria-current="page" href="/user/connect/link">Verbindung prüfen</a>
-                        <a class="btn btn-secondary" aria-current="page" href="/user/connect/install">Zurück</a>
-                        <a class="btn bnt-cancel" aria-current="page" href="/user/info">Abbrechen</a>
+                    <div class="row gy-5 ">
+                        <div class="d-grid gap-2 d-md-block">
+                            <button type="submit" class="btn btn-primary">Verbindung bestätigen</button>
+                            <a class="btn btn-secondary" aria-current="page" href="/user/connect/scan">Zurück</a>
+                            <a class="btn bnt-cancel" aria-current="page" href="/user/info">Abbrechen</a>
+                        </div>
                     </div>
-                </div>
+                </form>
+
+
             </div>
         </div>
 
