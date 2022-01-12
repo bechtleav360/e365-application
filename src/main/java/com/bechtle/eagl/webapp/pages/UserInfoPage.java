@@ -1,5 +1,6 @@
 package com.bechtle.eagl.webapp.pages;
 
+import com.bechtle.eagl.webapp.config.SecurityConfiguration;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @Log
@@ -27,8 +29,13 @@ public class UserInfoPage {
     @RequestMapping("/user/info")
     public String index(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
         log.info("Accessing secured site");
+        List<String> relationshipIds = principal.<String>getAttribute(SecurityConfiguration.USER_DETAILS_RELATION_ID);
+        if(relationshipIds != null && relationshipIds.size() > 0) {
+            model.addAttribute("relationshipId", relationshipIds.get(0));
+        }
 
-        model.addAttribute("username", principal.getAttribute("username"));
+        model.addAttribute("relationshipId", principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_RELATION_ID));
+        model.addAttribute("username", principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
 
         return "user_info";
     }

@@ -1,6 +1,6 @@
 package com.bechtle.eagl.webapp.clients;
 
-import com.bechtle.eagl.webapp.clients.user.requests.User;
+import com.bechtle.eagl.webapp.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -36,9 +36,9 @@ public class WalletClient extends AbstractClient {
 
     public void link(String username, String code) {
         String uri = UriComponentsBuilder.fromHttpUrl(url).pathSegment(username, "code").encode().toUriString();
-
         HttpEntity<String> request = new HttpEntity<>(code, getApiKeyHeader(apiKey));
         ResponseEntity<User> exchange = getRestTemplate().exchange(uri, HttpMethod.PUT, request, User.class);
         // return exchange.getBody();
     }
+
 }

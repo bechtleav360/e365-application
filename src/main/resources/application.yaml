@@ -13,8 +13,10 @@ spring:
 logging:
   path: "./"
   level:
-    org.springframework.security: DEBUG
-    org.springframework.security.saml2: TRACE
+    com:
+      bechtle: TRACE
+    org.springframework.security: INFO
+    org.springframework.security.saml2: INFO
 
 management:
   endpoint:

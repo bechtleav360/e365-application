@@ -18,6 +18,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Slf4j
 public class SecurityConfiguration {
 
+    public static final String USER_DETAILS_LOGIN = "username" ;
+    public static final String USER_DETAILS_RELATION_ID = "user_details_relationid";
+    public static final String USER_DETAILS_CODE = "user_details_code";
 
     @Bean
         SecurityFilterChain configureSaml(HttpSecurity http, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) throws Exception {
