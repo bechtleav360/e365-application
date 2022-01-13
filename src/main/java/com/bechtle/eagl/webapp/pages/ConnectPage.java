@@ -4,6 +4,7 @@ import com.bechtle.eagl.webapp.clients.UsersClient;
 import com.bechtle.eagl.webapp.clients.WalletClient;
 import com.bechtle.eagl.webapp.model.User;
 import com.bechtle.eagl.webapp.config.SecurityConfiguration;
+import com.bechtle.eagl.webapp.services.AuthenticationAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,19 +22,21 @@ import java.util.List;
 public class ConnectPage {
     private final WalletClient walletClient;
     private final UsersClient usersClient;
+    private final AuthenticationAttributes authenticationAttributes;
 
     @Autowired
     public ConnectPage(
             Environment environment,
             WalletClient walletClient,
-            UsersClient usersClient){
+            UsersClient usersClient, AuthenticationAttributes authenticationAttributes){
         this.walletClient = walletClient;
         this.usersClient = usersClient;
+        this.authenticationAttributes = authenticationAttributes;
     }
 
     @GetMapping("/user/connect/install")
     public String index(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
-
+        String uid = authenticationAttributes.getUid(principal);
 
         model.addAttribute("progress", "Schritt 1 von 3");
         model.addAttribute("step", 1);
