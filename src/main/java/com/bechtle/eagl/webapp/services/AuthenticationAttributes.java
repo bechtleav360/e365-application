@@ -5,13 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.annotation.SessionScope;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Map;
 
-@Service
+/**
+ * Clean solution would be session-scoped bean, but they are bit complicated for now.
+ */
+@Component
 public class AuthenticationAttributes {
+
+    private final Map<String, String> walletMappings = new HashMap<>();
 
     @Autowired
     private Environment env;
@@ -33,13 +42,14 @@ public class AuthenticationAttributes {
     }
 
     public void setWalletId(Saml2AuthenticatedPrincipal principal, Relationships relationships) {
+
         if(StringUtils.hasLength(relationships.getRelationshipId()))
-            principal.getAttribute("walletId").add(relationships.getRelationshipId());
+            this.walletMappings.put(this.getUid(principal), relationships.getRelationshipId());
 
     }
 
     public String getWalletId(Saml2AuthenticatedPrincipal principal) {
-        return principal.getFirstAttribute("walletId");
+        return this.walletMappings.get(this.getUid(principal));
     }
 
 

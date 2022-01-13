@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -30,16 +31,22 @@ public class UsersClient extends AbstractClient {
     public User getUser(String username) throws IOException {
         String uri = UriComponentsBuilder.fromHttpUrl(url).pathSegment(username).encode().toUriString();
         HttpEntity<String> request = new HttpEntity<>(getApiKeyHeader(apiKey));
+        try {
+            ResponseEntity<User> response = getRestTemplate().exchange(uri, HttpMethod.GET, request, User.class);
+            if(response.getStatusCode().value() == 404) return null;
+            if(response.getBody() == null) return null;
+            if(StringUtils.hasLength(response.getBody().getLogin())) {
+                return response.getBody();
+            }
 
-        ResponseEntity<User> response = getRestTemplate().exchange(uri, HttpMethod.GET, request, User.class);
-        if(response.getStatusCode().value() == 404) return null;
-        if(response.getBody() == null) return null;
-        if(StringUtils.hasLength(response.getBody().getLogin())) {
-
-            return response.getBody();
+            else {
+                log.error("Failed to retrieve user {} with status code {}", username, response.getStatusCodeValue());
+                throw new IOException("Failed to retrieve user from wallet api with status "+response.getStatusCodeValue());
+            }
+        } catch (HttpServerErrorException ex) {
+            log.error("Failed to retrieve user {}", username, ex);
+            throw new IOException("Failed to retrieve user from wallet api", ex);
         }
-
-        else throw new IOException("Failed to retrieve user from wallet api, response is: "+response.getStatusCode());
 
     }
 

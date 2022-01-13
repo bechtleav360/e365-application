@@ -8,7 +8,9 @@ import com.bechtle.eagl.webapp.services.AuthenticationAttributes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,8 +32,8 @@ public class UserEvents {
         this.authenticationAttributes = authenticationAttributes;
     }
 
-    @EventListener(AuthenticationSuccessEvent.class)
-    public void checkUserExists(AuthenticationSuccessEvent event) {
+    @EventListener({AuthenticationSuccessEvent.class, InteractiveAuthenticationSuccessEvent.class})
+    public void checkUserExists(AbstractAuthenticationEvent event) {
         Object principal = event.getAuthentication().getPrincipal();
         if (! (principal instanceof Saml2AuthenticatedPrincipal)) {
             log.warn("Invalid authentication detected: {}", event.getAuthentication());
