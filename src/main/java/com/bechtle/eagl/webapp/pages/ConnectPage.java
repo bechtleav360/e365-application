@@ -36,11 +36,10 @@ public class ConnectPage {
 
     @GetMapping("/user/connect/install")
     public String index(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
-        String uid = authenticationAttributes.getUid(principal);
 
         model.addAttribute("progress", "Schritt 1 von 3");
         model.addAttribute("step", 1);
-        model.addAttribute("login",  principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
+        model.addAttribute("login",  authenticationAttributes.getUid(principal));
 
         return "connect/install-app";
     }
@@ -50,7 +49,7 @@ public class ConnectPage {
 
         model.addAttribute("progress", "Schritt 2 von 3");
         model.addAttribute("step", 2);
-        model.addAttribute("login",  principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
+        model.addAttribute("login",  authenticationAttributes.getUid(principal));
 
         return "connect/scan-token";
     }
@@ -60,7 +59,7 @@ public class ConnectPage {
         walletClient.sync(principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
 
         model.addAttribute("progress", "Schritt 3 von 3");
-        model.addAttribute("login",  principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
+        model.addAttribute("login",  authenticationAttributes.getUid(principal));
         model.addAttribute("step", 2);
 
         return "connect/sync";
@@ -69,7 +68,7 @@ public class ConnectPage {
 
     @PostMapping("/user/connect/code")
     public String insertCode(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, @RequestParam("linkingCode")  String code, Model model) throws IOException {
-        String login = principal.<String>getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN);
+        String login = authenticationAttributes.getUid(principal);
 
 
 
