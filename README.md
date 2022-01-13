@@ -15,12 +15,12 @@ openssl pkcs8 -topk8 -nocrypt -in testing.key -outform PEM -out testing.key.pem
 ```
 
 The generated key files should be placed within the folder `src/main/resources`. Configure the path in the 
-application.yaml accordingly.   /
+application.yaml accordingly.  
 
 
 ### Run as Azure Web App
 
-Configure a new web app and define the  application setting with the Key SPRING_APPLICATION_JSON and the following value 
+Configure a new web app and define the  application setting (as Deployment Option) with the Key SPRING_APPLICATION_JSON and the following value 
 
 ```
 {
@@ -37,3 +37,5 @@ Configure a new web app and define the  application setting with the Key SPRING_
   "key": "xxxx"
 }
 ```
+
+The application setting PORT should point to the port configured in the application properties. 
