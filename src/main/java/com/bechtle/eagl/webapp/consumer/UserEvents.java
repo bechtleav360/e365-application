@@ -4,11 +4,11 @@ import com.bechtle.eagl.webapp.clients.UsersClient;
 import com.bechtle.eagl.webapp.model.User;
 import com.bechtle.eagl.webapp.config.SecurityConfiguration;
 import com.bechtle.eagl.webapp.model.events.UserRefreshedEvent;
+import com.bechtle.eagl.webapp.services.AuthenticationAttributes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,10 +21,13 @@ import java.util.List;
 public class UserEvents {
 
     private UsersClient client;
+    private final AuthenticationAttributes authenticationAttributes;
 
-    public UserEvents(@Autowired UsersClient client) {
+    public UserEvents(@Autowired UsersClient client,
+                      @Autowired AuthenticationAttributes authenticationAttributes) {
 
         this.client = client;
+        this.authenticationAttributes = authenticationAttributes;
     }
 
     @EventListener(AuthenticationSuccessEvent.class)
@@ -34,32 +37,24 @@ public class UserEvents {
             log.warn("Invalid authentication detected: {}", event.getAuthentication());
             return;
         }
-        Saml2AuthenticatedPrincipal samlPrincipal  = (Saml2AuthenticatedPrincipal) principal;
+        String login = authenticationAttributes.getUid((Saml2AuthenticatedPrincipal) principal);
 
-
-        List<Object> usernames = samlPrincipal.getAttribute("username");
-        if(usernames.size() != 1) {
-            log.warn("No username in authentication detected: {}", usernames);
+        if(! StringUtils.hasLength(login)) {
+            log.warn("No username in authentication detected: {}", login);
             return;
         }
-
-        String username = usernames.get(0).toString();
-        if(! StringUtils.hasLength(username)) {
-            log.warn("No username in authentication detected: {}", usernames);
-            return;
-        }
-        log.debug("New user '{}' authenticated, checking if user exists or has to be created.", username);
+        log.debug("New user '{}' authenticated, checking if user exists or has to be created.", login);
 
         try {
-            User user = client.getUser(username);
+            User user = client.getUser(login);
 
             if(user == null) {
-                log.info("User '{}' does not exist, creating a new user", username);
-                client.createUser(username);
+                log.info("User '{}' does not exist, creating a new user", login);
+                client.createUser(login);
             } else {
                 user.getRelationships().stream().findFirst()
                         .map(relationships -> {
-                            samlPrincipal.getAttributes().put(SecurityConfiguration.USER_DETAILS_RELATION_ID, List.of(relationships));
+                            authenticationAttributes.setWalletId((Saml2AuthenticatedPrincipal) principal, relationships);
                             return relationships;
                         });
             }

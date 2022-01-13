@@ -1,10 +1,12 @@
 package com.bechtle.eagl.webapp.services;
 
+import com.bechtle.eagl.webapp.model.Relationships;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -29,6 +31,17 @@ public class AuthenticationAttributes {
     public String getLastName(Saml2AuthenticatedPrincipal principal) {
         return this.getValue(principal, "lastname");
     }
+
+    public void setWalletId(Saml2AuthenticatedPrincipal principal, Relationships relationships) {
+        if(StringUtils.hasLength(relationships.getRelationshipId()))
+            principal.getAttribute("walletId").add(relationships.getRelationshipId());
+
+    }
+
+    public String getWalletId(Saml2AuthenticatedPrincipal principal) {
+        return principal.getFirstAttribute("walletId");
+    }
+
 
     private String getValue(Saml2AuthenticatedPrincipal principal, String key) {
         String path = this.constructPath(principal.getRelyingPartyRegistrationId(), key);

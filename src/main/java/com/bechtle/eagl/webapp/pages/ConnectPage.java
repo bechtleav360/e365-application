@@ -2,6 +2,7 @@ package com.bechtle.eagl.webapp.pages;
 
 import com.bechtle.eagl.webapp.clients.UsersClient;
 import com.bechtle.eagl.webapp.clients.WalletClient;
+import com.bechtle.eagl.webapp.model.Relationships;
 import com.bechtle.eagl.webapp.model.User;
 import com.bechtle.eagl.webapp.config.SecurityConfiguration;
 import com.bechtle.eagl.webapp.services.AuthenticationAttributes;
@@ -11,12 +12,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ConnectPage {
@@ -56,7 +59,7 @@ public class ConnectPage {
 
     @GetMapping("/user/connect/link")
     public String sync(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
-        walletClient.sync(principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
+        walletClient.sync(authenticationAttributes.getUid(principal));
 
         model.addAttribute("progress", "Schritt 3 von 3");
         model.addAttribute("login",  authenticationAttributes.getUid(principal));
@@ -70,13 +73,15 @@ public class ConnectPage {
     public String insertCode(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, @RequestParam("linkingCode")  String code, Model model) throws IOException {
         String login = authenticationAttributes.getUid(principal);
 
-
-
+        // link
         walletClient.link(login, code);
+        // then fetch user again, this time with relationship
         User user = usersClient.getUser(login);
-        user.getRelationships().stream().findFirst()
-                .map(relationships -> principal.getAttributes().put(SecurityConfiguration.USER_DETAILS_RELATION_ID, List.of(relationships)));
-        model.addAttribute("relationshipId", user.getRelationships());
+
+        Relationships relationship = user.getRelationships().stream().findFirst().orElseGet(Relationships::new);
+
+        authenticationAttributes.setWalletId(principal, relationship);
+        model.addAttribute("relationshipId", relationship.getRelationshipId());
         model.addAttribute("progress", "Abgeschlossen");
         model.addAttribute("step", 2);
 
