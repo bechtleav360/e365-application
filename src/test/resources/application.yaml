@@ -2,6 +2,9 @@
 #  datasource:
 #    url: jdbc:h2:file:/data/demo
 
+spring:
+  profiles:
+    active: local
 
 endpoints:
   wallet:
@@ -13,23 +16,17 @@ endpoints:
 
 locations:
   metadata:
-    okta_azure: "saml/metadata.xml"
-    daad: "https://saml-bird.daad.com/saml2/idp/metadata.php"
+    okta_localhost: "saml/metadata-localhost.xml"
   certificates:
     signing: "saml/localhost.cer"
     decryption: "saml/localhost.cer"
     verification:
-      okta_azure: "saml/okta.cert"
-      daad: "saml/daad.cert"
+      okta_localhost: "saml/okta.cert"
   key: ""
-key: ""
 
 server:
   port : 8090
 
-spring:
-  profiles:
-    active: local
     
 logging:
   path: "./"
