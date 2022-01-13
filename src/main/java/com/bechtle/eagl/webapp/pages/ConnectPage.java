@@ -19,7 +19,6 @@ import java.util.List;
 
 @Controller
 public class ConnectPage {
-    private String appMode;
     private final WalletClient walletClient;
     private final UsersClient usersClient;
 
@@ -28,7 +27,6 @@ public class ConnectPage {
             Environment environment,
             WalletClient walletClient,
             UsersClient usersClient){
-        appMode = environment.getProperty("app-mode");
         this.walletClient = walletClient;
         this.usersClient = usersClient;
     }
@@ -39,7 +37,7 @@ public class ConnectPage {
 
         model.addAttribute("progress", "Schritt 1 von 3");
         model.addAttribute("step", 1);
-        model.addAttribute("mode", appMode);
+        model.addAttribute("login",  principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
 
         return "connect/install-app";
     }
@@ -47,24 +45,20 @@ public class ConnectPage {
     @GetMapping("/user/connect/scan")
     public String create_relationship(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
 
-        String username = principal.getAttribute("username").get(0).toString();
         model.addAttribute("progress", "Schritt 2 von 3");
         model.addAttribute("step", 2);
-        model.addAttribute("login", username);
-        model.addAttribute("mode", appMode);
+        model.addAttribute("login",  principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
 
         return "connect/scan-token";
     }
 
     @GetMapping("/user/connect/link")
     public String sync(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
-        String username = principal.getAttribute("username").get(0).toString();
-        walletClient.sync(username);
+        walletClient.sync(principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
 
         model.addAttribute("progress", "Schritt 3 von 3");
-        model.addAttribute("login", username);
+        model.addAttribute("login",  principal.getFirstAttribute(SecurityConfiguration.USER_DETAILS_LOGIN));
         model.addAttribute("step", 2);
-        model.addAttribute("mode", appMode);
 
         return "connect/sync";
     }
@@ -83,7 +77,6 @@ public class ConnectPage {
         model.addAttribute("relationshipId", user.getRelationships());
         model.addAttribute("progress", "Abgeschlossen");
         model.addAttribute("step", 2);
-        model.addAttribute("mode", appMode);
 
         return "connect/success";
     }
