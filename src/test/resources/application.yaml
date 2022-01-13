@@ -1,0 +1,51 @@
+#spring:
+#  datasource:
+#    url: jdbc:h2:file:/data/demo
+
+
+endpoints:
+  wallet:
+    url: "http://localhost:8080/api/wallet"
+    apikey: "xxx"
+  user:
+    url: "http://localhost:8080/api/user"
+    apikey: "xxx"
+
+locations:
+  metadata:
+    okta_azure: "saml/metadata.xml"
+    daad: "https://saml-bird.daad.com/saml2/idp/metadata.php"
+  certificates:
+    signing: "saml/localhost.cer"
+    decryption: "saml/localhost.cer"
+    verification:
+      okta_azure: "saml/okta.cert"
+      daad: "saml/daad.cert"
+  key: ""
+key: ""
+
+server:
+  port : 8090
+
+spring:
+  profiles:
+    active: local
+    
+logging:
+  path: "./"
+  level:
+    com:
+      bechtle: TRACE
+    org.springframework.security: INFO
+    org.springframework.security.saml2: INFO
+
+management:
+  endpoint:
+    mappings:
+      enabled: true
+    info:
+      enabled: true
+    git:
+     enabled: true
+
+

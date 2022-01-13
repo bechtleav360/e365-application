@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,7 @@ import org.springframework.security.saml2.provider.service.web.DefaultRelyingPar
 import org.springframework.security.saml2.provider.service.web.RelyingPartyRegistrationResolver;
 import org.springframework.security.saml2.provider.service.web.Saml2MetadataFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +49,9 @@ public class RemoteRelyingPartyConfiguration {
 
     @Value("${locations.key}")
     String key_path;
+
+    @Value("${key}")
+    String key_asString;
 
 
 
@@ -84,6 +89,8 @@ public class RemoteRelyingPartyConfiguration {
 
 
     private X509Certificate loadCertificate(String path)  {
+
+
         Resource resource = new ClassPathResource(path);
         try (InputStream is = resource.getInputStream()) {
             X509Certificate certificate = (X509Certificate)
@@ -99,7 +106,15 @@ public class RemoteRelyingPartyConfiguration {
     }
 
     private RSAPrivateKey loadPrivateKey() throws IllegalArgumentException {
-        Resource resource = new ClassPathResource(key_path);
+        Resource resource = null;
+        if(StringUtils.hasLength(key_asString)) {
+            log.info("Loading private key from application properties");
+            resource = new ByteArrayResource(key_asString.getBytes());
+        } else {
+            log.info("Loading private key from classpath");
+            resource = new ClassPathResource(key_path);
+        }
+
         try (InputStream is = resource.getInputStream()) {
             RSAPrivateKey rsa = RsaKeyConverters.pkcs8().convert(is);
             return rsa;

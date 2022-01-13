@@ -16,7 +16,7 @@ public class WalletClient extends AbstractClient {
     @Value("${endpoints.wallet.url}")
     String url;
 
-    @Value("${endpoints.wallet.apiKey}")
+    @Value("${endpoints.wallet.apikey}")
     String apiKey;
 
 

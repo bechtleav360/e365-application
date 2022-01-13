@@ -19,7 +19,7 @@ public class UsersClient extends AbstractClient {
     @Value("${endpoints.user.url}")
     String url;
 
-    @Value("${endpoints.user.apiKey}")
+    @Value("${endpoints.user.apikey}")
     String apiKey;
 
 
