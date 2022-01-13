@@ -3,11 +3,10 @@ package com.bechtle.eagl.webapp.clients;
 import com.bechtle.eagl.webapp.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -43,6 +42,10 @@ public class UsersClient extends AbstractClient {
                 log.error("Failed to retrieve user {} with status code {}", username, response.getStatusCodeValue());
                 throw new IOException("Failed to retrieve user from wallet api with status "+response.getStatusCodeValue());
             }
+        } catch (HttpClientErrorException ex) {
+            if(ex.getStatusCode() == HttpStatus.NOT_FOUND) return null;
+            else throw new IOException("Failed to retrieve user from wallet api", ex);
+
         } catch (HttpServerErrorException ex) {
             log.error("Failed to retrieve user {}", username, ex);
             throw new IOException("Failed to retrieve user from wallet api", ex);
@@ -52,10 +55,13 @@ public class UsersClient extends AbstractClient {
 
     public User createUser(String username) throws IOException {
         // Lombok Builder seems to be not supported jackson (-webflux) environment
+        HttpHeaders headers = getApiKeyHeader(apiKey);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         User user = new User();
         user.setLogin(username);
 
-        HttpEntity<User> request = new HttpEntity<>(user, getApiKeyHeader(apiKey));
+        HttpEntity<User> request = new HttpEntity<>(user, headers);
         ResponseEntity<User> response = getRestTemplate().exchange(url + "/", HttpMethod.POST, request, User.class);
         if(response.getStatusCode().is5xxServerError() || response.getStatusCode().is4xxClientError()) {
             throw new IOException("Failed to create user through wallet api, response is: "+response.getStatusCode());

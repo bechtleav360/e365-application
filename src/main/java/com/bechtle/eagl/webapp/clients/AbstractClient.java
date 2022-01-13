@@ -1,6 +1,7 @@
 package com.bechtle.eagl.webapp.clients;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 public class AbstractClient {
@@ -18,6 +19,7 @@ public class AbstractClient {
     protected HttpHeaders getApiKeyHeader(String apiKey) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-API-KEY", apiKey);
+
         return headers;
     }
 
