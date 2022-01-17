@@ -1,8 +1,8 @@
 package com.bechtle.eagl.webapp.config;
 
-import com.bechtle.eagl.webapp.model.metadata.ObjectFactory;
 import com.ctc.wstx.api.WstxOutputProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
@@ -22,9 +22,9 @@ public class JacksonConfiguration {
         log.info("Configuring XML Mapper");
         XmlMapper xmlMapper = builder.createXmlMapper(true).build();
         xmlMapper.enable(ToXmlGenerator.Feature.WRITE_XML_DECLARATION);
-        xmlMapper.getFactory().getXMLOutputFactory().setProperty(WstxOutputProperties.P_USE_DOUBLE_QUOTES_IN_XML_DECL, true);
+        // xmlMapper.getFactory().getXMLOutputFactory().setProperty(WstxOutputProperties.P_USE_DOUBLE_QUOTES_IN_XML_DECL, true);
 
-        xmlMapper.registerModule(new JaxbAnnotationModule());
+        // xmlMapper.registerModule(new JaxbAnnotationModule());
         return new MappingJackson2XmlHttpMessageConverter(xmlMapper);
     }
 
@@ -36,10 +36,6 @@ public class JacksonConfiguration {
     }
 
 
-    @Bean
-    public ObjectFactory objectFactory() {
-        return new ObjectFactory();
-    }
 }
 
 

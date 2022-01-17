@@ -1,7 +1,6 @@
 package com.bechtle.eagl.webapp.controller;
 
 import com.bechtle.eagl.webapp.model.metadata.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,47 +8,62 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MetadataApi {
 
-    private ObjectFactory objectFactory;
 
-    public MetadataApi(@Autowired ObjectFactory objectFactory) {
+    public MetadataApi() {
 
-        this.objectFactory = objectFactory;
     }
 
 
-    @RequestMapping(value="/metadata", produces= MediaType.APPLICATION_XML_VALUE)
-    public Import loadMetadata() {
+    @RequestMapping(value = "/metadata", produces = MediaType.APPLICATION_XML_VALUE)
+    public MImport loadMetadata() {
 
-        Import mImport = objectFactory.createImport();
-        mImport.getList().add(getAcademy());
-        mImport.getList().add(getCourse());
-
-        return mImport;
+        return MImport
+                .builder()
+                .entity(getAcademy())
+                .entity(getCourses())
+                .build();
     }
 
     private MList getAcademy() {
-        MBirdAcademy academy = objectFactory.createMBirdAcademy();
-        academy.setId("EAGL");
-        academy.setKurzname("Generierte Lernpfade");
-        academy.setName("Generierte Lernpfade für kostenfreie Inhalte");
+        MBirdAcademy build = MBirdAcademy
+                .builder()
+                .id("EAGL")
+                .kurzname("Generierte Lernpfade")
+                .name("Generierte Lernpfade für kostenfreie Inhalte")
+                .build();
+        return MList.builder()
+                .type("bird_academy")
+                .academy(build)
+                .build();
 
-        MList mList = new MList();
-        mList.setType(MType.BIRD_ACADEMY);
-        mList.getBirdAcademy().add(academy);
-        return mList;
+
     }
 
-    private MList getCourse() {
-        MBirdCourse course = new MBirdCourse();
-        course.setId("IT-Controlling");
-        course.setLectureType("Playlist");
-        course.setAcademyId("WWW");
-        course.setLectureType("Kurs");
-
-        MList mList = new MList();
-        mList.setType(MType.BIRD_COURSE);
-        mList.getBirdCourse().add(course);
-        return mList;
+    private MList getCourses() {
+        return MList.builder()
+                .type("bird_course")
+                .course(MBirdCourse.builder()
+                        .id("1")
+                        .lectureType("Playlist")
+                        .academyId("http://eagl.azurewebsites.net")
+                        .name("Risikomanagement")
+                        .build()
+                )
+                .course(MBirdCourse.builder()
+                        .id("2")
+                        .lectureType("Playlist")
+                        .academyId("http://eagl.azurewebsites.net")
+                        .name("Einführung in Scrum")
+                        .build()
+                )
+                .course(MBirdCourse.builder()
+                        .id("3")
+                        .lectureType("Playlist")
+                        .academyId("http://eagl.azurewebsites.net")
+                        .name("Übersicht IT-Controlling")
+                        .build()
+                )
+                .build();
     }
 
 }

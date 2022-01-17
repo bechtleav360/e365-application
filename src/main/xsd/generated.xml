@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<import xmlns="https://www.mathplan.de/moses/xsd/default">
+    <list type="bird_academy">
+        <bird_academy>
+            <id>EAGL</id>
+            <name>Generierte Lernpfade für kostenfreie Inhalte</name>
+            <kurzname>Generierte Lernpfade</kurzname>
+        </bird_academy>
+    </list>
+    <list type="bird_course">
+        <bird_course>
+            <id>1</id>
+            <name>Risikomanagement</name>
+            <academyId>http://eagl.azurewebsites.net</academyId>
+            <lectureType>Playlist</lectureType>
+            <sws>0</sws>
+        </bird_course>
+        <bird_course>
+            <id>2</id>
+            <name>Einführung in Scrum</name>
+            <academyId>http://eagl.azurewebsites.net</academyId>
+            <lectureType>Playlist</lectureType>
+            <sws>0</sws>
+        </bird_course>
+        <bird_course>
+            <id>3</id>
+            <name>Übersicht IT-Controlling</name>
+            <academyId>http://eagl.azurewebsites.net</academyId>
+            <lectureType>Playlist</lectureType>
+            <sws>0</sws>
+        </bird_course>
+    </list>
+</import>
