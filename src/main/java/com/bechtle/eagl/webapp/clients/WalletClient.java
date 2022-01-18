@@ -32,7 +32,7 @@ public class WalletClient extends AbstractClient {
     }
 
 
-    public void sync(String username) {
+    public void sync() {
         String uri = UriComponentsBuilder.fromHttpUrl(url).pathSegment("sync").encode().toUriString();
         HttpEntity<String> request = new HttpEntity<>(getApiKeyHeader(apiKey));
         getRestTemplate().exchange(uri, HttpMethod.GET, request, Void.class);
