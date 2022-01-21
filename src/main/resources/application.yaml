@@ -6,9 +6,12 @@
 server:
   port : 8090
 
-spring:
-  profiles:
-    active: local
+endpoints:
+  wallet:
+    retries: 5
+  user:
+    retries: 5
+
     
 logging:
   path: "./"
