@@ -44,11 +44,11 @@ public class UsersClient extends AbstractClient {
             }
         } catch (HttpClientErrorException ex) {
             if(ex.getStatusCode() == HttpStatus.NOT_FOUND) return null;
-            else throw new IOException("Failed to retrieve user from wallet api", ex);
+            else throw ex;
 
         } catch (HttpServerErrorException ex) {
-            log.error("Failed to retrieve user {}", username, ex);
-            throw new IOException("Failed to retrieve user from wallet api", ex);
+            log.error("Failed to retrieve user {} due to server error", username, ex);
+            throw ex;
         }
 
     }

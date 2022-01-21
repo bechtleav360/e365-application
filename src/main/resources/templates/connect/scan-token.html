@@ -42,13 +42,12 @@
                     <p class="col-md-8 fs-4">
                         Öffnen sie die Enmeshed App und richten Sie, falls notwendig, ein neues Profil ein. Sobald Sie gefragt werden,
                         scannen sie mit Hilfe ihrer Kamera bitte den angezeigten QR-Code ein.
-
                     </p>
 
                 </div>
                 <div class="row gy-9">
                     <div class="container">
-                    <img class="img-thumbnail" alt="QR-Code für Scan" th:src="@{/api/token(login=${login})}">
+                    <img class="img-thumbnail" alt="QR-Code für Scan (Seite neu laden falls nicht angezeigt)" th:src="@{/api/token(login=${login})}">
                     </div>
                 </div>
                 <div class="row gy-5 ">
