@@ -10,9 +10,11 @@ endpoints:
   wallet:
     url: "http://localhost:8080/api/wallet"
     apikey: "xxx"
+    retries: 5
   user:
     url: "http://localhost:8080/api/user"
     apikey: "xxx"
+    retries: 5
 
 locations:
   metadata:
