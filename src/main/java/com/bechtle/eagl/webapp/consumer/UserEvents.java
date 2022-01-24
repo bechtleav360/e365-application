@@ -22,6 +22,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import javax.swing.text.rtf.RTFEditorKit;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 
 @Service
 @Slf4j
@@ -53,9 +54,9 @@ public class UserEvents {
         } else {
             if(event.hasRetries()) {
                 log.debug("Retrying (attempt '{}') creation of user with id {}", event.getRetry(), authenticationAttributes.getUid((Saml2AuthenticatedPrincipal) event.getAuthentication().getPrincipal()));
-                scheduler.scheduleWithFixedDelay(() -> this.checkIfUserExists(event), Duration.ofSeconds(1));
+                scheduler.schedule(() -> this.checkIfUserExists(event), Instant.now().plusSeconds(5));
             } else {
-                scheduler.scheduleWithFixedDelay(() -> this.checkIfUserExists(event), Duration.ofMillis(10));
+                scheduler.schedule(() -> this.checkIfUserExists(event), Instant.now().plusMillis(10));
             }
         }
 
@@ -92,8 +93,7 @@ public class UserEvents {
         }
         log.debug("New user '{}' authenticated, checking if user exists or has to be created.", login);
 
-        event.incrementRetries();
-        publisher.publishEvent(event);
+
 
         try {
             User user = client.getUser(login);
@@ -111,6 +111,7 @@ public class UserEvents {
             }
         } catch (HttpServerErrorException ex) {
             // we pool the request
+            event.incrementRetries();
             publisher.publishEvent(event);
 
         } catch (IOException e) {
